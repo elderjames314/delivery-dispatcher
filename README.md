@@ -35,3 +35,4 @@ App to manage delivery dispatchers
 * Lombok
 * Spring Postgres Driver
 * Java 17
+* Maven
