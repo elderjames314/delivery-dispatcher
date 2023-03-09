@@ -29,6 +29,7 @@ App to manage delivery dispatchers
 
 ## Dependencies
 * Springboot 3.04 : latest
+* Spring 6
 * Spring security
 * Spring web
 * Spring Data JPA

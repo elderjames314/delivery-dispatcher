@@ -19,7 +19,7 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY= "73357638792F423F4528482B4D6251655468576D5A7134743677397A24432646"
+    private static final String SECRET_KEY= "73357638792F423F4528482B4D6251655468576D5A7134743677397A24432646";
     public String extractUsername(String jwtToken) {
         return extractClaim(jwtToken, Claims::getSubject);
     }
