@@ -55,5 +55,7 @@ App to manage delivery dispatchers
 * DeliveryControllerIntegrationTest
 
 ## Test coverage:
+  
+https://github.com/elderjames314/delivery-dispatcher/blob/main/testReport/index.html
 
 ![image](https://user-images.githubusercontent.com/67545814/224547204-103d8402-479b-4701-89e9-cb1a0e464c36.png)
