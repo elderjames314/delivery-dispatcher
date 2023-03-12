@@ -53,3 +53,10 @@ App to manage delivery dispatchers
 * AuthenticationControllerIntegrationTest
 * LocationControllerIntegrationTest
 * DeliveryControllerIntegrationTest
+
+## Postman collection for the APIS
+  download and upload it to your postman collection
+* /klash-delivery-dispatcher.postman_collection.json
+
+## Apis documentation:
+view it here: https://documenter.getpostman.com/view/1702774/2s93JtQj7D
