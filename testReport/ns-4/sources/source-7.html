@@ -1,0 +1,238 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > DeliveryService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.klash.deliverydispatcher.delivery</a>
+</div>
+
+<h1>Coverage Summary for Class: DeliveryService (com.klash.deliverydispatcher.delivery)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DeliveryService</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/66)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">DeliveryService$MockitoMock$k38YCDPw</td>
+  </tr>
+  <tr>
+    <td class="name">DeliveryService$MockitoMock$k38YCDPw$auxiliary$3p1Oa7Is</td>
+  </tr>
+  <tr>
+    <td class="name">DeliveryService$MockitoMock$k38YCDPw$auxiliary$D5uTCZ0z</td>
+  </tr>
+  <tr>
+    <td class="name">DeliveryService$MockitoMock$k38YCDPw$auxiliary$Q3cMtrVp</td>
+  </tr>
+  <tr>
+    <td class="name">DeliveryService$MockitoMock$k38YCDPw$auxiliary$Rc9f9M2r</td>
+  </tr>
+  <tr>
+    <td class="name">DeliveryService$MockitoMock$k38YCDPw$auxiliary$uy45bodD</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/66)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.klash.deliverydispatcher.delivery;
+&nbsp;
+&nbsp;import com.klash.deliverydispatcher.exception.ErrorResponse;
+&nbsp;import com.klash.deliverydispatcher.location.Location;
+&nbsp;import com.klash.deliverydispatcher.location.LocationRepository;
+&nbsp;import com.klash.deliverydispatcher.response.ResponseData;
+&nbsp;import com.klash.deliverydispatcher.utils.GeoLocation;
+&nbsp;import com.klash.deliverydispatcher.utils.KilometerDistance;
+&nbsp;import com.klash.deliverydispatcher.utils.Message;
+&nbsp;import jakarta.transaction.Transactional;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;@Service
+<b class="nc">&nbsp;@RequiredArgsConstructor</b>
+&nbsp;public class DeliveryService {
+&nbsp;    private final DeliveryRepository deliveryRepository;
+&nbsp;    private final LocationRepository locationRepository;
+&nbsp;    private final DeliveryLocationRepository deliveryLocationRepository;
+&nbsp;    public ResponseData save(DeliveryRequest request) {
+<b class="nc">&nbsp;        var delivery = Delivery.builder()</b>
+<b class="nc">&nbsp;                .itemName(request.getItemName())</b>
+<b class="nc">&nbsp;                .description(request.getDescription())</b>
+<b class="nc">&nbsp;                .build();</b>
+<b class="nc">&nbsp;        deliveryRepository.save(delivery);</b>
+<b class="nc">&nbsp;        return ResponseData.builder()</b>
+<b class="nc">&nbsp;                .message(Message.SUCCESS)</b>
+<b class="nc">&nbsp;                .data(delivery)</b>
+<b class="nc">&nbsp;                .build();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    public ResponseData setupDeliveryLocation(DeliveryLocationRequest request) {
+<b class="nc">&nbsp;        Optional&lt;Delivery&gt; delivery = getDelivery(request.getDeliveryId());</b>
+<b class="nc">&nbsp;        if(!delivery.isPresent())</b>
+<b class="nc">&nbsp;            return itemNotFound(Message.DELIVERY);</b>
+<b class="nc">&nbsp;        for (Integer locationId: request.getLocationIds()) {</b>
+<b class="nc">&nbsp;            Optional&lt;Location&gt; location = getLocation(locationId);</b>
+<b class="nc">&nbsp;            if(!location.isPresent())</b>
+<b class="nc">&nbsp;                return itemNotFound(Message.LOCATION + &quot; with ID: &quot;+ locationId);</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        for (Integer locationId: request.getLocationIds()) {</b>
+<b class="nc">&nbsp;            var location = getLocation(locationId);</b>
+<b class="nc">&nbsp;            var delivery2 = getDelivery(request.getDeliveryId());</b>
+<b class="nc">&nbsp;            var deliveryLocation = DeliveryLocation.builder()</b>
+<b class="nc">&nbsp;                    .location(location.get())</b>
+<b class="nc">&nbsp;                    .delivery(delivery2.get())</b>
+<b class="nc">&nbsp;                    .build();</b>
+<b class="nc">&nbsp;            deliveryLocationRepository.save(deliveryLocation);</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return ResponseData.builder()</b>
+<b class="nc">&nbsp;                .message(Message.SUCCESS)</b>
+<b class="nc">&nbsp;                .build();</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    public ResponseData takeDelivery(TakeDeliveryRequest request) {
+<b class="nc">&nbsp;        Optional&lt;Delivery&gt; delivery = getDelivery(request.getDeliveryId());</b>
+<b class="nc">&nbsp;        if(!delivery.isPresent())</b>
+<b class="nc">&nbsp;            return itemNotFound(Message.DELIVERY);</b>
+<b class="nc">&nbsp;        double bestOptimalRouteInKm = Integer.MAX_VALUE;</b>
+<b class="nc">&nbsp;        Location bestDestination = new Location();</b>
+<b class="nc">&nbsp;        List&lt;DeliveryLocation&gt; deliveryLocations = deliveryLocationRepository.findByDelivery(delivery.get());</b>
+<b class="nc">&nbsp;        if(deliveryLocations.isEmpty()) return ResponseData.builder().message(Message.DELIVERY_LOCATION_NOT_SET).build();</b>
+<b class="nc">&nbsp;        if(deliveryLocations.size() &lt; 3) return ResponseData.builder().message(Message.THREE_LOCATIONS_MUST_BE_SET_FOR_DELIVERY).build();</b>
+<b class="nc">&nbsp;        for(DeliveryLocation deliveryLocation : deliveryLocations) {</b>
+<b class="nc">&nbsp;            Optional&lt;Location&gt; location = getLocation(deliveryLocation.getLocation().getId());</b>
+<b class="nc">&nbsp;            if(!location.isPresent()) return itemNotFound(Message.LOCATION);</b>
+<b class="nc">&nbsp;            GeoLocation coordinates = GeoLocation.builder()</b>
+<b class="nc">&nbsp;                    .originLatitude(Double.parseDouble(request.getOrigin().getLatitude()))</b>
+<b class="nc">&nbsp;                    .originLongitude(Double.parseDouble(request.getOrigin().getLongitude()))</b>
+<b class="nc">&nbsp;                    .destinationLatitude(Double.parseDouble(location.get().getLat()))</b>
+<b class="nc">&nbsp;                    .destinationLongitude(Double.parseDouble(location.get().getLon()))</b>
+<b class="nc">&nbsp;                    .build();</b>
+<b class="nc">&nbsp;            Double distance = KilometerDistance.distanceInKmBetweenEarthCoordinates(coordinates);</b>
+<b class="nc">&nbsp;            bestOptimalRouteInKm = Math.min(bestOptimalRouteInKm, distance);</b>
+<b class="nc">&nbsp;            bestDestination = deliveryLocation.getLocation();</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;        //1KM = $1;
+<b class="nc">&nbsp;        Double cost = bestOptimalRouteInKm * 1;</b>
+&nbsp;
+<b class="nc">&nbsp;        TakeDeliveryResponse takeDeliveryResponse = TakeDeliveryResponse.builder()</b>
+<b class="nc">&nbsp;                .cost(&quot;$&quot; + Math.round(cost))</b>
+<b class="nc">&nbsp;                .origin(request.getOrigin())</b>
+<b class="nc">&nbsp;                .destination(bestDestination)</b>
+<b class="nc">&nbsp;                .delivery(delivery.get())</b>
+<b class="nc">&nbsp;                .distance(&quot;&quot;+Math.round(bestOptimalRouteInKm) + &quot;KM&quot;)</b>
+<b class="nc">&nbsp;                .build();</b>
+<b class="nc">&nbsp;        return ResponseData.builder()</b>
+<b class="nc">&nbsp;                .message(Message.SUCCESS)</b>
+<b class="nc">&nbsp;                .data(takeDeliveryResponse)</b>
+<b class="nc">&nbsp;                .build();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private Optional&lt;Delivery&gt; getDelivery(Integer deliveryId) {
+<b class="nc">&nbsp;        return deliveryRepository.findById(deliveryId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private ResponseData itemNotFound(String item) {
+<b class="nc">&nbsp;        return ResponseData.builder().message(item +&quot; not found&quot;).build();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private Optional&lt;Location&gt; getLocation(Integer locationId) {
+<b class="nc">&nbsp;        return locationRepository.findById(locationId);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-03-12 14:14</div>
+</div>
+</body>
+</html>
