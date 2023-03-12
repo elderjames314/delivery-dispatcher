@@ -37,3 +37,19 @@ App to manage delivery dispatchers
 * Spring Postgres Driver
 * Java 17
 * Maven
+
+## Controller
+* AuthenticationController
+* LocationController
+* DeliveryController
+
+## Services
+* AuthenticationService
+* LocationService
+* DeliveryService
+
+
+## Test
+* AuthenticationControllerIntegrationTest
+* LocationControllerIntegrationTest
+* DeliveryControllerIntegrationTest

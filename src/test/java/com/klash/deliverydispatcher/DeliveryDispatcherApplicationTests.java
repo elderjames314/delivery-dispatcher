@@ -8,6 +8,9 @@ class DeliveryDispatcherApplicationTests {
 
 	@Test
 	void contextLoads() {
+		new AuthenticationControllerIntegrationTest();
+		new LocationControllerIntegrationTest();
+		new DeliveryControllerIntegrationTest();
 	}
 
 }
